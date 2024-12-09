@@ -2,18 +2,18 @@ import Foundation
 import Testing
 @testable import Interpolations
 
-@Test func testIf() async throws {
+@Test func testCondition() async throws {
     
     struct Sandwich {
         let isStarred: Bool
-        let name = "Cheese"
+        let name: String
     }
     
-    let sandwich1 = Sandwich(isStarred: true)
-    print("Cheese Sandwich\(if: sandwich1.isStarred, " (*)")")
-    
-    let sandwich2 = Sandwich(isStarred: false)
-    print("Cheese Sandwich\(if: sandwich2.isStarred, " (*)")")
+    let sandwich1 = Sandwich(isStarred: true, name: "Bacon")
+    print("Sandwich: \(sandwich1.name) \(if: sandwich1.isStarred, " (*)")")
+
+    let sandwich2 = Sandwich(isStarred: false, name: "  Ham")
+    print("Sandwich: \(sandwich2.name) \(if: sandwich2.isStarred, " (*)")")
     
 }
 
@@ -33,10 +33,16 @@ import Testing
 
 @Test func testPadding() async throws {
     
-    print("\(23, .format(width: 5))")                       // "   23"
-    print("\(23, .format(alignment: .left, width: 5))")     // "23   "
+    print("\(23, .format(width: 5))")                           // "   23"
+    print("\(23, .format(paddingCharacter: "0", width: 5))")    // "00023"
+    print("\(23, .format(alignment: .left, width: 5))")         // "23   "
+    
+    print("\(23.0, .format(width: 5))")                         // " 23.0"
+    
+    print("\(UInt8(23), .format(width: 5))")                    // "   23"
 
-    print("\(23.0, .format(width: 5))")                     // " 23.0"
+    print("pad T \(true, .format(width: 8))")                         // "   23"
+    print("pad F \(false, .format(width: 8))")                        // "   23"
 
 }
 
@@ -70,4 +76,34 @@ import Testing
     print("\(Double.pi, formatter: formatter)")
     print("\(500, formatter: formatter)")
 
+}
+
+@Test func testOptional() async throws {
+    
+    var optional: Int? = nil
+    print("\(optional, default: "-NIL-")")
+    
+    optional = 1
+    print("\(optional, default: "-NIL-")")
+    
+    //---
+    
+    let value1: Int? = 23
+    let value2: Int? = nil
+    
+    print("[opt-1]: \(value1, .format(style: .default)) and \(value2, .format(style: .default))")
+    
+    // "There's Optional(23) and Optional(nil)"
+    print("[opt-2]: \(value1, .format(style: .descriptive)) and \(value2, .format(style: .descriptive))")
+    
+    // "There's 23 and nil"
+    print("[opt-3a]: \(value1, .format(style: .stripped)) and \(value2, .format(style: .stripped))")
+    print("[opt-3b]: \(value1, .format()) and \(value2, .format())")
+    
+    //---
+    
+    print("none \(0, zero: "ZERO", one: "ONE", many: "MANY")")
+    print(" one \(1, zero: "ZERO", one: "ONE", many: "MANY")")
+    print("many \(2, zero: "ZERO", one: "ONE", many: "MANY")")
+    
 }
