@@ -1,10 +1,4 @@
-/*
- 
- Optional interpolation reform
- 
- */
-
-extension DefaultStringInterpolation {
+extension String.StringInterpolation {
     /// Provides `Optional` string interpolation
     ///
     /// - Parameters:
@@ -20,7 +14,7 @@ extension DefaultStringInterpolation {
     }
 }
 
-extension DefaultStringInterpolation {
+extension String.StringInterpolation {
     /// Interpolates optional values using a supplied style.
     ///
     /// ```
@@ -68,27 +62,27 @@ public class OptionalFormatter {
     
     public func string<Wrapped>(from value: Wrapped?) -> String {
         switch style {
-        case .descriptive:      // Includes the word `Optional` for both `some` and `none` cases
-            if value == nil {
-                return "Optional(\(defaultValue))"
-            } else {
-                return String(describing: value)
-            }
-            
-        case .stripped:         // Strips the word `Optional` for both `some` and `none` cases
-            if let value = value {
-                return "\(value)"
-            } else {
-                return defaultValue
-            }
-
-        case .system:           // includes the word `Optional` for`some` cases but not `none`.
-        default:
-            if value != nil {
-                return String(describing: value)
-            } else {
-                return defaultValue
-            }
+            case .descriptive:      // Includes the word `Optional` for both `some` and `none` cases
+                if value == nil {
+                    return "Optional(\(defaultValue))"
+                } else {
+                    return String(describing: value)
+                }
+                
+            case .stripped:         // Strips the word `Optional` for both `some` and `none` cases
+                if let value = value {
+                    return "\(value)"
+                } else {
+                    return defaultValue
+                }
+                
+            case .system,
+                    .default:      // includes the word `Optional` for`some` cases but not `none`.
+                if value != nil {
+                    return String(describing: value)
+                } else {
+                    return defaultValue
+                }
         }
     }
 }
@@ -96,16 +90,13 @@ public class OptionalFormatter {
 
 
 
-extension DefaultStringInterpolation {
+extension String.StringInterpolation {
     public mutating func appendInterpolation(_ value: Int,
                                              zero: String, one: String, many: String) {
         switch value {
-        case 0:
-            appendLiteral(zero)
-        case 1:
-            appendLiteral(one)
-        default:
-            appendLiteral(many)
+            case 0: appendLiteral(zero)
+            case 1: appendLiteral(one)
+            default: appendLiteral(many)
         }
     }
 }

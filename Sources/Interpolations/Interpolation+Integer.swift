@@ -1,12 +1,4 @@
-/*
- 
- Radix interpolation for Binary Integers
- 
- */
-
-import Foundation
-
-public extension DefaultStringInterpolation {
+public extension String.StringInterpolation {
     /// Interpolates a binary integer value using the supplied integer formatter,
     /// for example:
     ///
@@ -29,19 +21,13 @@ public extension DefaultStringInterpolation {
 public class IntegerFormatter {
     /// Represents a single numeric radix
     public enum Radix: Int {
-        /// a binary number (base 2)
-        case binary = 2
-        /// an octal number (base 8)
-        case octal = 8
-        /// a decimal number (base 10)
-        case decimal = 10
-        /// a hex number (base 16)
-        case hex = 16
-        
+        case binary = 2             // a binary number (base 2)
+        case octal = 8              // an octal number (base 8)
+        case decimal = 10           // a decimal number (base 10)
+        case hex = 16               // a hex number (base 16)
+
         /// Returns a radix's optional prefix
-        public var prefix: String {
-            return [.binary: "0b", .octal: "0o", .hex: "0x"][self, default: ""]
-        }
+        public var prefix: String { [.binary: "0b", .octal: "0o", .hex: "0x"][self, default: ""] }
     }
     
     /// A standard (decimal, binary, octal, or hex) radix
@@ -73,8 +59,7 @@ public class IntegerFormatter {
         return IntegerFormatter(radix: radix, usesPrefix: usesPrefix, isBytewise: isBytewise, width: width)
     }
     
-    /// Returns a string representing the integer value using the
-    /// formatter's current settings.
+    /// Returns a string representing the integer value using the formatter's current settings.
     ///
     /// - Parameter value: a binary integer
     /// - Returns: a formatted string

@@ -1,13 +1,10 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
-
-extension DefaultStringInterpolation {
+extension String.StringInterpolation {
     mutating func appendInterpolation(twoDigits value: Int) {
         appendInterpolation((value < 10 ? "0" : "") + String(value))
     }
 }
 
-extension DefaultStringInterpolation {
+extension String.StringInterpolation {
     mutating func appendInterpolation(threeDigits value: Int) {
         switch value {
             case 0..<10:
@@ -20,7 +17,7 @@ extension DefaultStringInterpolation {
     }
 }
 
-extension DefaultStringInterpolation {
+extension String.StringInterpolation {
     mutating func appendInterpolation(twoDigits value: Double) {
         appendInterpolation((value < 10.0 ? "0" : "") + String(value))
     }
