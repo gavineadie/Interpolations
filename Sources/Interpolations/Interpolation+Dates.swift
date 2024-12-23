@@ -7,7 +7,7 @@ public extension String.StringInterpolation {
     ///   - value: a date
     ///   - formatter: a date formatter
     mutating func appendInterpolation(_ value: Date,
-                                      _ formatter: DateFormatter) {
+                                             _ formatter: DateFormatter) {
         appendLiteral(formatter.string(from: value))
     }
 }

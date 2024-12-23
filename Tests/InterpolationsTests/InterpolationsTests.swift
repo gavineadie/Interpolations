@@ -73,8 +73,8 @@ import Testing
     formatter.paddingCharacter = "0"
     formatter.minimumIntegerDigits = 5
 
-    print("\(Double.pi, formatter: formatter)")
-    print("\(500, formatter: formatter)")
+//    print("\(Double.pi, formatter: formatter)")
+//    print("\(Double(500.0), formatter: formatter)")
 
 }
 

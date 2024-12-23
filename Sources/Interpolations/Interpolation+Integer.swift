@@ -12,7 +12,7 @@ public extension String.StringInterpolation {
     ///   - value: an integer value
     ///   - formatter: a configured integer formatter
     mutating func appendInterpolation<IntegerValue: BinaryInteger>(_ value: IntegerValue,
-                                                                   _ formatter: IntegerFormatter) {
+                                                                          _ formatter: IntegerFormatter) {
         appendLiteral(formatter.string(from: value))
     }
 }

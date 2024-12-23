@@ -10,8 +10,8 @@ extension String.StringInterpolation {
     /// - Parameters:
     ///   - condition: a Boolean predicate that evaluates to true or false
     ///   - literal: a `String` literal to include on conditional success
-    mutating func appendInterpolation(if condition: @autoclosure () -> Bool,
-                                      _ literal: StringLiteralType) {
+    public mutating func appendInterpolation(if condition: @autoclosure () -> Bool,
+                                             _ literal: StringLiteralType) {
         guard condition() else { return }
         appendLiteral(literal)
     }

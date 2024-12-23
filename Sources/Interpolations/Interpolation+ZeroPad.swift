@@ -1,10 +1,8 @@
-extension String.StringInterpolation {
+public extension String.StringInterpolation {
     mutating func appendInterpolation(twoDigits value: Int) {
         appendInterpolation((value < 10 ? "0" : "") + String(value))
     }
-}
 
-extension String.StringInterpolation {
     mutating func appendInterpolation(threeDigits value: Int) {
         switch value {
             case 0..<10:
@@ -15,10 +13,9 @@ extension String.StringInterpolation {
                 appendInterpolation(String(value))
         }
     }
-}
 
-extension String.StringInterpolation {
     mutating func appendInterpolation(twoDigits value: Double) {
         appendInterpolation((value < 10.0 ? "0" : "") + String(value))
     }
 }
+
