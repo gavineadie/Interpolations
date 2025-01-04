@@ -9,53 +9,81 @@ import Testing
         let name: String
     }
     
-    let sandwich1 = Sandwich(isStarred: true, name: "Bacon")
-    print("Sandwich: \(sandwich1.name) \(if: sandwich1.isStarred, " (*)")")
+    let bacon = Sandwich(isStarred: true, name: "Bacon")
+    #expect("\(bacon.name)\(if: bacon.isStarred, " (*)")" == "Bacon (*)")
 
-    let sandwich2 = Sandwich(isStarred: false, name: "  Ham")
-    print("Sandwich: \(sandwich2.name) \(if: sandwich2.isStarred, " (*)")")
-    
+    let honey = Sandwich(isStarred: false, name: "Honey")
+    #expect("\(honey.name)\(if: honey.isStarred, " (*)")" == "Honey")
+
+}
+
+@Test func testFractions() async throws {
+
+/*╭╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╮
+  ┆ custom formatters (maximumFractionDigits)                                                        ┆
+  ╰╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╯*/
+    #expect("\(123.456, .format(maxFracts: 0))" == "123", "\(#function)")
+    #expect("\(123.456, .format(maxFracts: 1))" == "123.5", "\(#function)")
+    #expect("\(123.456, .format(maxFracts: 2))" == "123.46", "\(#function)")
+    #expect("\(123.456, .format(maxFracts: 3))" == "123.456", "\(#function)")
+    #expect("\(123.456, .format(maxFracts: 99))" == "123.456", "\(#function)")
+
+    print("max Fractions XX: \(123.456, .format(alignment: .center, paddingCharacter: "-", width: 20))")
+
 }
 
 @Test func testZeroPads() async throws {
-    
-    print("\(twoDigits: 5)")
-    print("\(twoDigits: 55)")
 
-    print("\(threeDigits: 5)")
-    print("\(threeDigits: 55)")
-    print("\(threeDigits: 555)")
+    #expect("\(twoDigits: 5)" == "05")
+    #expect("\(twoDigits: 55)" == "55")
 
-    print("\(twoDigits: 5.0)")
-    print("\(twoDigits: 55.0)")
+    #expect("\(threeDigits: 5)" == "005")
+    #expect("\(threeDigits: 55)" == "055")
+    #expect("\(threeDigits: 555)" == "555")
+
+    #expect("\(twoDigits: 5.0)" == "05.0")
+    #expect("\(twoDigits: 55.0)" == "55.0")
 
 }
 
 @Test func testPadding() async throws {
     
-    print("\(23, .format(width: 5))")                           // "   23"
-    print("\(23, .format(paddingCharacter: "0", width: 5))")    // "00023"
-    print("\(23, .format(alignment: .left, width: 5))")         // "23   "
-    
-    print("\(23.0, .format(width: 5))")                         // " 23.0"
-    
-    print("\(UInt8(23), .format(width: 5))")                    // "   23"
+    #expect("\(23, .format(width: 5))" == "   23")
+    #expect("\(23, .format(paddingCharacter: "0", width: 5))" == "00023")
+    #expect("\(23, .format(alignment: .left, width: 5))" == "23   ")
 
-    print("pad T \(true, .format(width: 8))")                         // "   23"
-    print("pad F \(false, .format(width: 8))")                        // "   23"
+    #expect("\(23.0, .format(width: 5))" == " 23.0")
+
+    #expect("\(UInt8(23), .format(width: 5))" == "   23")
+
+    print("••• \(#function): pad T \(true, .format(width: 8))")                         // "   23"
+    print("••• \(#function): pad F \(false, .format(width: 8))")                        // "   23"
 
 }
 
 @Test func testDates() async throws {
-    
+
     print("\(Date.now, .format(date: .medium, time: .medium))")
 
 }
 
 @Test func testRadix() async throws {
-    
-    print("\(15, .format(radix: .binary, usesPrefix: true, isBytewise: true))")
-    
+
+    print("\(15, .format(radix: .binary, isBytewise: true))")
+    print("\(15, .format(radix: .octal, isBytewise: true))")
+    print("\(15, .format(radix: .decimal, isBytewise: true))")
+    print("\(15, .format(radix: .hex, isBytewise: true))")
+
+    print("\(15, .format(radix: .binary, usesPrefix: true))")
+    print("\(15, .format(radix: .octal, usesPrefix: true))")
+    print("\(15, .format(radix: .decimal, usesPrefix: true))")
+    print("\(15, .format(radix: .hex, usesPrefix: true))")
+
+    print("\(15, .format(radix: .binary, usesPrefix: true, isBytewise: true, width: 10))")
+    print("\(15, .format(radix: .octal, usesPrefix: true, isBytewise: true, width: 10))")
+    print("\(15, .format(radix: .decimal, usesPrefix: true, isBytewise: true, width: 10))")
+    print("\(15, .format(radix: .hex, usesPrefix: true, isBytewise: true, width: 10))")
+
 }
 
 @Test func testFormatter() async throws {

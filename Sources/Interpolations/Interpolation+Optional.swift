@@ -1,4 +1,4 @@
-extension String.StringInterpolation {
+extension DefaultStringInterpolation {
     /// Provides `Optional` string interpolation
     ///
     /// - Parameters:

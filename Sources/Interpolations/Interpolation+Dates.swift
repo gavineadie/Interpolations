@@ -1,13 +1,13 @@
 import Foundation
 
-public extension String.StringInterpolation {
+public extension DefaultStringInterpolation {
     /// Interpolates a date using the supplied formatter.
     ///
     /// - Parameters:
     ///   - value: a date
     ///   - formatter: a date formatter
     mutating func appendInterpolation(_ value: Date,
-                                             _ formatter: DateFormatter) {
+                                      _ formatter: DateFormatter) {
         appendLiteral(formatter.string(from: value))
     }
 }

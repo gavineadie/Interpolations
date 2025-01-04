@@ -1,7 +1,7 @@
 import Foundation
 
 // Thanks Brent Royal-Gordan
-public extension String.StringInterpolation {
+extension DefaultStringInterpolation {
     mutating func appendInterpolation<Value: _ObjectiveCBridgeable>(_ value: Value,
                              formatter: NumberFormatter) where Value._ObjectiveCType == NSNumber {
         if let string = formatter.string(from: NSNumber(nonretainedObject: value)) {
@@ -12,26 +12,11 @@ public extension String.StringInterpolation {
     }
 }
 
-public extension String.StringInterpolation {
-
-    /// Interpolates a floating point value using a number formatter.
-    mutating func appendInterpolation<Value: FloatingPoint>(_ number: Value,
-                                                                   formatter: NumberFormatter) {
-        if
-            let value = number as? NSNumber,
-            let string = formatter.string(from: value) {
-            appendLiteral(string)
-        } else {
-            appendLiteral("Unformattable<\(number)>")
-        }
-    }
-    
+extension DefaultStringInterpolation {
     /// Interpolates an integer value using a number formatter.
-    mutating func appendInterpolation<Value: BinaryInteger>(_ number: Value,
-                                                                   formatter: NumberFormatter) {
-        if
-            let value = number as? NSNumber,
-            let string = formatter.string(from: value) {
+    mutating func appendInterpolation<IntegerValue: BinaryInteger>(_ number: IntegerValue,
+                                                            formatter: NumberFormatter) {
+        if let value = number as? NSNumber, let string = formatter.string(from: value) {
             appendLiteral(string)
         } else {
             appendLiteral("Unformattable<\(number)>")

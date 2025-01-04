@@ -1,8 +1,16 @@
-public extension String.StringInterpolation {
+extension DefaultStringInterpolation {
+    /// Interpolates a small integer number to two digits prependings "0" ..
+    ///
+    /// - Parameters:
+    ///   - value: an integer
     mutating func appendInterpolation(twoDigits value: Int) {
         appendInterpolation((value < 10 ? "0" : "") + String(value))
     }
 
+    /// Interpolates a small integer number to three digits prependings "0" ..
+    ///
+    /// - Parameters:
+    ///   - value: an integer
     mutating func appendInterpolation(threeDigits value: Int) {
         switch value {
             case 0..<10:
@@ -14,6 +22,10 @@ public extension String.StringInterpolation {
         }
     }
 
+    /// Interpolates a small floating point number to two digits prependings "0" ..
+    ///
+    /// - Parameters:
+    ///   - value: an Double
     mutating func appendInterpolation(twoDigits value: Double) {
         appendInterpolation((value < 10.0 ? "0" : "") + String(value))
     }

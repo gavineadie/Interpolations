@@ -1,4 +1,4 @@
-extension String.StringInterpolation {
+extension DefaultStringInterpolation {
     /// interpolation that succeeds only when the `condition` evaluates to true
     ///
     /// For example,
@@ -12,7 +12,6 @@ extension String.StringInterpolation {
     ///   - literal: a `String` literal to include on conditional success
     public mutating func appendInterpolation(if condition: @autoclosure () -> Bool,
                                              _ literal: StringLiteralType) {
-        guard condition() else { return }
-        appendLiteral(literal)
+        if condition() { appendLiteral(literal) }
     }
 }

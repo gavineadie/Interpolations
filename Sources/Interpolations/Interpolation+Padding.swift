@@ -1,4 +1,4 @@
-public extension String.StringInterpolation {
+extension DefaultStringInterpolation {
     /// Interpolates using a custom string formatter, allowing the results to be padded as desired:
     ///
     /// ```
