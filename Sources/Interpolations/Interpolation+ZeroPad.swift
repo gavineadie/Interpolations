@@ -1,4 +1,4 @@
-extension DefaultStringInterpolation {
+public extension DefaultStringInterpolation {
     /// Interpolates a small integer number to two digits prependings "0" ..
     ///
     /// - Parameters:
