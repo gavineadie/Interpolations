@@ -1,6 +1,6 @@
 import Foundation
 
-extension DefaultStringInterpolation {
+public extension DefaultStringInterpolation {
     /// Interpolates a BinaryFloatingPoint using the supplied NumberFormatter, for example:
     ///
     /// - Parameters:
@@ -21,11 +21,11 @@ public extension NumberFormatter {
     ///
     /// - Parameters:
     /// - Returns: an initialized number formatter using the current locale
-    static func format(maxFracts: UInt) -> NumberFormatter {
+    static func format(precision: UInt) -> NumberFormatter {
         let numberFormatter = NumberFormatter()
 
         numberFormatter.minimumIntegerDigits = 1
-        numberFormatter.maximumFractionDigits = Int(maxFracts)
+        numberFormatter.maximumFractionDigits = Int(precision)
         numberFormatter.usesGroupingSeparator = false
 
         return numberFormatter

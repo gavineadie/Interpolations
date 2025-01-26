@@ -17,7 +17,45 @@ import Testing
 
 }
 
-@Test func testFractions() async throws {
+//    (\(format.index, format: .decimal(minDigits: 3)))    : \
+//    \(format.words) = \(value, format: .octal(minDigits: 5))₈
+
+@Test func testIntegers() async throws {
+/*╭╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╮
+  ┆ binary                                                                                           ┆
+  ╰╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╯*/
+    #expect("\(1234, .format(radix: .binary))" == "10011010010")
+    #expect("\(1234, .format(radix: .binary, minDigits: 8))" == "10011010010")
+    #expect("\(1234, .format(radix: .binary, minDigits: 12))" == "010011010010")
+    #expect("\(1234, .format(radix: .binary, usesPrefix: true, minDigits: 12))" == "0b010011010010")
+    #expect("\(1234, .format(radix: .binary, usesPrefix: true, isBytewise: true, minDigits: 12))" == "0b10011010010")
+/*╭╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╮
+  ┆ octal                                                                                            ┆
+  ╰╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╯*/
+    #expect("\(1234, .format(radix: .octal))" == "2322")
+    #expect("\(1234, .format(radix: .octal, minDigits: 2))" == "2322")
+    #expect("\(1234, .format(radix: .octal, minDigits: 5))" == "02322")
+    #expect("\(1234, .format(radix: .octal, usesPrefix: true, minDigits: 5))" == "0o02322")
+    #expect("\(1234, .format(radix: .octal, usesPrefix: true, isBytewise: true, minDigits: 5))" == "0o2322")
+/*╭╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╮
+  ┆ decimal                                                                                          ┆
+  ╰╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╯*/
+    #expect("\(1234, .format(radix: .decimal))" == "1234")
+    #expect("\(1234, .format(radix: .decimal, minDigits: 2))" == "1234")
+    #expect("\(1234, .format(radix: .decimal, minDigits: 5))" == "01234")
+    #expect("\(1234, .format(radix: .decimal, usesPrefix: true, minDigits: 5))" == "01234")
+
+    #expect("\(-1234, .format(radix: .decimal))" == "-1234")
+    #expect("\(-1234, .format(radix: .decimal, minDigits: 6))" == "0-1234")  // negative padding fails
+/*╭╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╮
+  ┆ hex                                                                                              ┆
+  ╰╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╯*/
+    #expect("\(1234, .format(radix: .hex))" == "4D2")
+    #expect("\(1234, .format(radix: .hex, minDigits: 5))" == "004D2")
+    #expect("\(1234, .format(radix: .hex, usesPrefix: true, minDigits: 5))" == "0x004D2")
+}
+
+@Test func testFloats() async throws {
 
 /*╭╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╮
   ┆ custom formatters (maximumFractionDigits)                                                        ┆
@@ -79,10 +117,10 @@ import Testing
     print("\(15, .format(radix: .decimal, usesPrefix: true))")
     print("\(15, .format(radix: .hex, usesPrefix: true))")
 
-    print("\(15, .format(radix: .binary, usesPrefix: true, isBytewise: true, width: 10))")
-    print("\(15, .format(radix: .octal, usesPrefix: true, isBytewise: true, width: 10))")
-    print("\(15, .format(radix: .decimal, usesPrefix: true, isBytewise: true, width: 10))")
-    print("\(15, .format(radix: .hex, usesPrefix: true, isBytewise: true, width: 10))")
+    print("\(15, .format(radix: .binary, usesPrefix: true, isBytewise: true,                        minDigits: 10))")
+    print("\(15, .format(radix: .octal, usesPrefix: true, isBytewise: true,                        minDigits: 10))")
+    print("\(15, .format(radix: .decimal, usesPrefix: true, isBytewise: true,                        minDigits: 10))")
+    print("\(15, .format(radix: .hex, usesPrefix: true, isBytewise: true,                        minDigits: 10))")
 
 }
 
