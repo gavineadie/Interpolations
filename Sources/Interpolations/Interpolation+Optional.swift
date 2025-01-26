@@ -14,7 +14,7 @@ extension DefaultStringInterpolation {
     }
 }
 
-extension String.StringInterpolation {
+extension DefaultStringInterpolation {
     /// Interpolates optional values using a supplied style.
     ///
     /// ```

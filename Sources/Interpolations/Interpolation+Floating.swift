@@ -17,15 +17,16 @@ public extension DefaultStringInterpolation {
 }
 
 public extension NumberFormatter {
-    /// Returns an initialized `NumberFormatter` instance using the supplied date and time styles.
+    /// Returns an initialized `NumberFormatter` for "±1234.5" ..
     ///
     /// - Parameters:
-    /// - Returns: an initialized number formatter using the current locale
-    static func format(precision: UInt) -> NumberFormatter {
+    ///   - maxFractionDigits: number of fractional digits (1)
+    /// - Returns: an initialized number formatter
+    static func format(maxFractionDigits: UInt = 1) -> NumberFormatter {
         let numberFormatter = NumberFormatter()
 
         numberFormatter.minimumIntegerDigits = 1
-        numberFormatter.maximumFractionDigits = Int(precision)
+        numberFormatter.maximumFractionDigits = Int(maxFractionDigits)
         numberFormatter.usesGroupingSeparator = false
 
         return numberFormatter

@@ -1,4 +1,4 @@
-public extension String.StringInterpolation {
+public extension DefaultStringInterpolation {
     /// Interpolates a binary integer value using the supplied integer formatter,
     /// for example:
     ///
@@ -19,7 +19,6 @@ public extension String.StringInterpolation {
 
 /// A formatter that converts between binary integer values and their textual representations.
 public class IntegerFormatter {
-    /// Represents a single numeric radix
     public enum Radix: Int {
         case binary = 2             // a binary number (base 2)
         case octal = 8              // an octal number (base 8)
@@ -36,23 +35,12 @@ public class IntegerFormatter {
         }
     }
     
-    /// A standard (decimal, binary, octal, or hex) radix
-    public var radix: Radix = .decimal
-    
-    /// Adds an optional prefix (`0b`, `0o`, or `0x`) corresponding to the output radix.
-    public var usesPrefix: Bool = false
-    
-    /// Forces a "+" on positive values (decimals only)
-    public var explicitPositiveSign: Bool = false
-    
-    /// Creates an entire byte in the output string (8 numbers for binary, 4 for octal, 2 for hex), left padding with zeroes.
-    public var isBytewise: Bool = false
-    
-    /// The minimum width of the output string, which is left padded with zeroes
-    /// unless the output string is already at least `width` in size.
+    public var radix: Radix = .decimal              // A standard (decimal, binary, octal, or hex) radix
+    public var usesPrefix: Bool = false             // Adds an optional prefix (`0b`, `0o`, or `0x`)
+    public var explicitPositiveSign: Bool = false   // Forces a "+" on positive values (decimals only)
+    public var isBytewise: Bool = false             // 8 numbers for binary, 4 for octal, 2 for hex
     public var minDigits: Int = 0
     
-    /// Initializes a new instance of an IntegerFormatter
     public init(radix: Radix = .decimal,
                 usesPrefix: Bool = false,
                 explicitPositiveSign: Bool = false,
