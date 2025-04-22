@@ -30,4 +30,3 @@ public extension DefaultStringInterpolation {
         appendInterpolation((value < 10.0 ? "0" : "") + String(value))
     }
 }
-

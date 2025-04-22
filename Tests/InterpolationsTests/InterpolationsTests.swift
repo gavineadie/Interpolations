@@ -17,6 +17,20 @@ import Testing
 
 }
 
+@Test func testRadix2() async throws {
+
+    let number = 255
+
+    let binaryFormat = IntegerFormatStyle<Int>.radix(2, prefix: "0b")
+    let hexFormat = IntegerFormatStyle<Int>.radix(16, uppercase: true, prefix: "0x")
+    let octalFormat = IntegerFormatStyle<Int>.radix(8, prefix: "0o")
+
+    print("Binary: \(binaryFormat.format(number))")  // Output: "Binary: 0b11111111"
+    print("Hex: \(hexFormat.format(number))")        // Output: "Hex: 0xFF"
+    print("Octal: \(octalFormat.format(number))")    // Output: "Octal: 0o377"
+
+}
+
 //    (\(format.index, format: .decimal(minDigits: 3)))    : \
 //    \(format.words) = \(value, format: .octal(minDigits: 5))₈
 
@@ -55,18 +69,29 @@ import Testing
     #expect("\(1234, .format(radix: .hex, usesPrefix: true, minDigits: 5))" == "0x004D2")
 }
 
+@Test func compare() async throws {
+
+//    let integer: Int = 1234
+//    #expect("\(1234, .format(radix: .octal))" == 1234.formatted(IntegerFormatStyle<Int>().radix(8)))
+//    #expect("\(integer, .format(radix: .octal))" == integer.formatted(.number.radix(8)))
+//    integer.formatted(IntegerFormatStyle<Int>().notation(.radix(8)))
+
+}
+
 @Test func testFloats() async throws {
 
 /*╭╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╮
   ┆ custom formatters (maximumFractionDigits)                                                        ┆
   ╰╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╯*/
-    #expect("\(123.456, .format(maxFracts: 0))" == "123", "\(#function)")
-    #expect("\(123.456, .format(maxFracts: 1))" == "123.5", "\(#function)")
-    #expect("\(123.456, .format(maxFracts: 2))" == "123.46", "\(#function)")
-    #expect("\(123.456, .format(maxFracts: 3))" == "123.456", "\(#function)")
-    #expect("\(123.456, .format(maxFracts: 99))" == "123.456", "\(#function)")
+    #expect("\(123.456, .format(maxFractionDigits: 0))" == "123", "\(#function)")
+    #expect("\(123.456, .format(maxFractionDigits: 1))" == "123.5", "\(#function)")
+    #expect("\(123.456, .format(maxFractionDigits: 2))" == "123.46", "\(#function)")
+    #expect("\(123.456, .format(maxFractionDigits: 3))" == "123.456", "\(#function)")
+    #expect("\(123.456, .format(maxFractionDigits: 99))" == "123.456", "\(#function)")
 
     print("max Fractions XX: \(123.456, .format(alignment: .center, paddingCharacter: "-", width: 20))")
+
+    print("\(123.456, .format(maxFractionDigits: 2))")
 
 }
 
