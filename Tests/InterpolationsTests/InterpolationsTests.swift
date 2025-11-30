@@ -17,6 +17,11 @@ import Testing
 
 }
 
+@Test func testSample() async throws {
+    let message1: Sample = "See \(issue: 123) where \(user: "gavin") explains"
+    #expect(message1.markdown == "See [#123](issues/123) where [gavin](https://github.com/gavin) explains")
+}
+
 @Test func testRadix2() async throws {
 
     let number = 255
@@ -25,9 +30,9 @@ import Testing
     let hexFormat = IntegerFormatStyle<Int>.radix(16, uppercase: true, prefix: "0x")
     let octalFormat = IntegerFormatStyle<Int>.radix(8, prefix: "0o")
 
-    print("Binary: \(binaryFormat.format(number))")  // Output: "Binary: 0b11111111"
-    print("Hex: \(hexFormat.format(number))")        // Output: "Hex: 0xFF"
-    print("Octal: \(octalFormat.format(number))")    // Output: "Octal: 0o377"
+    #expect("Binary: \(binaryFormat.format(number))" == "Binary: 0b11111111")
+    #expect("Hex: \(hexFormat.format(number))" == "Hex: 0xFF")
+    #expect("Octal: \(octalFormat.format(number))" == "Octal: 0o377")
 
 }
 
@@ -119,14 +124,14 @@ import Testing
 
     #expect("\(UInt8(23), .format(width: 5))" == "   23")
 
-    print("••• \(#function): pad T \(true, .format(width: 8))")                         // "   23"
-    print("••• \(#function): pad F \(false, .format(width: 8))")                        // "   23"
+    #expect("pad T \(true, .format(width: 8))" == "pad T     true")
+    #expect("pad F \(false, .format(width: 8))" == "pad F    false")
 
 }
 
 @Test func testDates() async throws {
 
-    print("\(Date.now, .format(date: .medium, time: .medium))")
+    print("\(Date.now, .format(dateStyle: .medium, timeStyle: .medium))")
 
 }
 
@@ -172,10 +177,10 @@ import Testing
 @Test func testOptional() async throws {
     
     var optional: Int? = nil
-    print("\(optional, default: "-NIL-")")
+    print("\(b_: optional, default: "-NIL-")")
     
     optional = 1
-    print("\(optional, default: "-NIL-")")
+    print("\(b_: optional, default: "-NIL-")")
     
     //---
     

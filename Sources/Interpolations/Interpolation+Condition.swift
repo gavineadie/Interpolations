@@ -1,3 +1,9 @@
+/*╭╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╮
+  ┆ String Interpolations for Condition (Bool) ..                                                    ┆
+  ┆                                                                                                  ┆
+  ┆     "\(if: «Bool», " (*)")"                                                                      ┆
+  ╰╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╯*/
+
 // MARK: - Conditional String Interpolation Extension
 
 public extension DefaultStringInterpolation {
@@ -14,7 +20,7 @@ public extension DefaultStringInterpolation {
     ///   - literal: The string to include when the condition is true.
     ///   - Note: The `condition` is an `@autoclosure`, so you can simply write a Boolean expression directly.
     mutating func appendInterpolation(if condition: @autoclosure () -> Bool,
-                                             _ literal: StringLiteralType) {
+                                      _ literal: StringLiteralType) {
         if condition() { appendLiteral(literal) }
     }
 }

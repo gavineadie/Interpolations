@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Date Interpolation
 
 public extension DefaultStringInterpolation {
-    /// Interpolates a `Date` using the specified `DateFormatter`.
+    /// Interpolates a date using the supplied formatter.
     ///
     /// This allows you to include formatted date strings directly within string
     /// interpolations, for example:
@@ -17,7 +17,8 @@ public extension DefaultStringInterpolation {
     /// - Parameters:
     ///   - value: The `Date` to format.
     ///   - formatter: The `DateFormatter` instance used to format the date.
-    mutating func appendInterpolation(_ value: Date, _ formatter: DateFormatter) {
+    mutating func appendInterpolation(_ value: Date,
+                                      _ formatter: DateFormatter) {
         appendLiteral(formatter.string(from: value))
     }
 }
@@ -39,10 +40,10 @@ public extension DateFormatter {
     ///   - date: The desired `DateFormatter.Style` for the date portion.
     ///   - time: The desired `DateFormatter.Style` for the time portion.
     /// - Returns: A new `DateFormatter` instance with the given styles and current locale.
-    static func format(date: Style, time: Style) -> DateFormatter {
+    static func format(dateStyle: Style, timeStyle: Style) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.locale = Locale.current
-        (formatter.dateStyle, formatter.timeStyle) = (date, time)
+        (formatter.dateStyle, formatter.timeStyle) = (dateStyle, timeStyle)
         return formatter
     }
 }

@@ -1,33 +1,12 @@
 // MARK: - Optional Value String Interpolation
 
-public extension DefaultStringInterpolation {
-    /// Interpolates an optional value, providing a custom default for `nil`.
-    ///
-    /// - Parameters:
-    ///   - value: The optional value to interpolate for the `.some` case.
-    ///   - defaultValue: The string to present for `.none` (nil).
-    ///
-    /// Example:
-    /// ```swift
-    /// "Count: \(myInt?, default: "none")"
-    /// ```
-    mutating func appendInterpolation(_ value: String?, default defaultValue: String) {
-        appendLiteral(value ?? defaultValue)
-    }
-    
-    mutating func appendInterpolation<Wrapped: CustomStringConvertible>(_ value: Wrapped?, default defaultValue: String) {
+extension DefaultStringInterpolation {
+    mutating func appendInterpolation<T>(b_ value: T?,
+                                         default: @autoclosure () -> String) {
         if let value {
-            appendLiteral(String(describing: value))
+            self.appendInterpolation(value)
         } else {
-            appendLiteral(defaultValue)
-        }
-    }
-    
-    mutating func appendInterpolation<Wrapped>(_ value: Wrapped?, nilText defaultValue: String) {
-        if let value {
-            appendInterpolation(value)
-        } else {
-            appendLiteral(defaultValue)
+            self.appendInterpolation(`default`())
         }
     }
 }

@@ -1,6 +1,6 @@
 // MARK: - Padding Interpolation
 
-extension DefaultStringInterpolation {
+public extension DefaultStringInterpolation {
     /// Interpolates a value using a custom string formatter, allowing padding and alignment.
     ///
     /// Example usage:
@@ -13,7 +13,7 @@ extension DefaultStringInterpolation {
     ///   - value: The value to format and interpolate.
     ///   - formatter: The string formatter that controls padding, alignment, and width.
     ///   - width: An optional minimum width that overrides the formatter's width if nonzero.
-    public mutating func appendInterpolation<Value>(
+ 	mutating func appendInterpolation<Value>(
         _ value: Value,
         _ formatter: StringFormatter,
         width: Int = 0
@@ -23,16 +23,10 @@ extension DefaultStringInterpolation {
     }
 }
 
-// MARK: - StringFormatter
-
-/// A formatter that adjusts string layout with alignment and padding.
+/// A formatter that adjusts string layout.
 public class StringFormatter {
-    /// The direction from which a string floats when padded.
-    public enum TextAlignment {
-        case left
-        case right
-        case center
-    }
+    /// The direction from which a string floats when padded with repeated characters.
+    public enum TextAlignment { case left, right, center }
 
     /// The alignment of the formatted text. Default is `.right`.
     public var alignment: TextAlignment

@@ -46,6 +46,9 @@ extension Sample: CustomStringConvertible {
   ┆ * implement `appendInterpolation(issue: Int)` to append the markdown representation of a link    ┆
   ┆   to that issue then implement `init(stringInterpolation: StringInterpolation)` on «Sample» to   ┆
   ┆   build a comment from those parts                                                               ┆
+  ┆                                                                                                  ┆
+  ┆     let message1: Sample = "See \(issue: 123) where \(user: "gavin") explains ..."               ┆
+  ┆                                                                                                  ┆
   ╰╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╯*/
 
 extension Sample: ExpressibleByStringInterpolation {
