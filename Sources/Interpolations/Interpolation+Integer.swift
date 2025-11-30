@@ -5,88 +5,118 @@
 import Foundation
 
 public extension DefaultStringInterpolation {
-    /// Interpolates a binary integer value using the supplied integer formatter,
-    /// for example:
+    // MARK: - Integer Interpolation
+
+    /// Interpolates a binary integer value using the supplied `IntegerFormatter`.
     ///
-    /// ```
-    /// "\(15, .format(radix: .hex))"                                       // F
-    /// "\(15, .format(radix: .hex, isBytewise: true))"                     // 0F
-    /// "\(15, .format(radix: .hex, usesPrefix: true, isBytewise: true))"   // 0x0F
+    /// Examples:
+    /// ```swift
+    /// "\(15, .format(radix: .hex))"                // "F"
+    /// "\(15, .format(radix: .hex, isBytewise: true))" // "0F"
+    /// "\(15, .format(radix: .hex, usesPrefix: true, isBytewise: true))" // "0x0F"
     /// ```
     ///
     /// - Parameters:
-    ///   - value: an integer value
-    ///   - formatter: a configured integer formatter
+    ///   - value: The integer value to format.
+    ///   - formatter: The configured `IntegerFormatter` instance.
     mutating func appendInterpolation<IntegerValue: BinaryInteger>(_ value: IntegerValue,
                                                                    _ formatter: IntegerFormatter) {
         appendLiteral(formatter.string(from: value))
     }
 }
 
-/// A formatter that converts between binary integer values and their textual representations.
+// MARK: - IntegerFormatter
+
+/// A formatter that converts binary integer values into textual representations.
+///
+/// Supports formatting with different radices, optional prefixes, explicit positive signs,
+/// bytewise padding, and minimum digit counts.
 public class IntegerFormatter {
+
+    /// Radix (base) options for integer formatting.
     public enum Radix: Int {
-        case binary = 2             // a binary number (base 2)
-        case octal = 8              // an octal number (base 8)
-        case decimal = 10           // a decimal number (base 10)
-        case hex = 16               // a hex number (base 16)
-        
-        /// Returns a radix's optional prefix
+        case binary = 2   // Binary (base 2)
+        case octal = 8    // Octal (base 8)
+        case decimal = 10 // Decimal (base 10)
+        case hex = 16     // Hexadecimal (base 16)
+
+        /// Optional prefix for the radix.
         public var prefix: String {
-            [
-                .binary: "0b",
-                .octal: "0o",
-                .hex: "0x"
-            ][self, default: ""]
+            switch self {
+            case .binary: return "0b"
+            case .octal: return "0o"
+            case .hex: return "0x"
+            default: return ""
+            }
         }
     }
 
-    public var radix: Radix = .decimal              // A standard (decimal, binary, octal, or hex) radix
-    public var usesPrefix: Bool = false             // Adds an optional prefix (`0b`, `0o`, or `0x`)
-    public var explicitPositiveSign: Bool = false   // Forces a "+" on positive values (decimals only)
-    public var isBytewise: Bool = false             // 8 numbers for binary, 4 for octal, 2 for hex
+    /// The radix (base) used for formatting. Default is `.decimal`.
+    public var radix: Radix = .decimal
+
+    /// Whether to prepend the radix prefix (`0b`, `0o`, `0x`). Defaults to `false`.
+    public var usesPrefix: Bool = false
+
+    /// Whether to include an explicit "+" sign for positive decimal numbers. Defaults to `false`.
+    public var explicitPositiveSign: Bool = false
+
+    /// Whether to pad digits bytewise: 8 digits for binary, 4 for octal, 2 for hex. Defaults to `false`.
+    public var isBytewise: Bool = false
+
+    /// The minimum number of digits to display. Defaults to 0.
     public var minDigits: Int = 0
 
+    /// Initializes a new integer formatter.
+    ///
+    /// - Parameters:
+    ///   - radix: The radix (base) to use.
+    ///   - usesPrefix: Whether to add the prefix string.
+    ///   - explicitPositiveSign: Whether to prepend "+" on positive decimal numbers.
+    ///   - isBytewise: Whether to pad digits bytewise.
+    ///   - minDigits: Minimum number of digits to display.
     public init(radix: Radix = .decimal,
                 usesPrefix: Bool = false,
                 explicitPositiveSign: Bool = false,
                 isBytewise: Bool = false,
                 minDigits: Int = 0) {
-        (self.radix,
-         self.usesPrefix,
-         self.explicitPositiveSign,
-         self.isBytewise,
-         self.minDigits) = (radix,
-                            usesPrefix,
-                            explicitPositiveSign,
-                            isBytewise,
-                            minDigits)
+        self.radix = radix
+        self.usesPrefix = usesPrefix
+        self.explicitPositiveSign = explicitPositiveSign
+        self.isBytewise = isBytewise
+        self.minDigits = minDigits
     }
 
-    static public func format(radix: Radix = .decimal,
+    /// Factory method to create an `IntegerFormatter` with specified options.
+    ///
+    /// - Parameters:
+    ///   - radix: The radix (base) to use.
+    ///   - usesPrefix: Whether to add the prefix string.
+    ///   - explicitPositiveSign: Whether to prepend "+" on positive decimal numbers.
+    ///   - isBytewise: Whether to pad digits bytewise.
+    ///   - minDigits: Minimum number of digits to display.
+    /// - Returns: A configured `IntegerFormatter` instance.
+    public static func format(radix: Radix = .decimal,
                               usesPrefix: Bool = false,
                               explicitPositiveSign: Bool = false,
                               isBytewise: Bool = false,
-                              minDigits: Int = 0
-    ) -> IntegerFormatter {
-        return IntegerFormatter(radix: radix,
-                                usesPrefix: usesPrefix,
-                                explicitPositiveSign: explicitPositiveSign,
-                                isBytewise: isBytewise,
-                                minDigits: minDigits)
+                              minDigits: Int = 0) -> IntegerFormatter {
+        IntegerFormatter(radix: radix,
+                         usesPrefix: usesPrefix,
+                         explicitPositiveSign: explicitPositiveSign,
+                         isBytewise: isBytewise,
+                         minDigits: minDigits)
     }
 
-    /// Returns a string representing the integer value using the formatter's current settings.
+    /// Returns a formatted string representation of the given integer value.
     ///
-    /// - Parameter value: a binary integer
-    /// - Returns: a formatted string
+    /// - Parameter value: The integer value to format.
+    /// - Returns: The formatted string.
     func string<IntegerValue: BinaryInteger>(from value: IntegerValue) -> String {
         var string = String(value, radix: radix.rawValue).uppercased()
 
-        // Bytewise strings are padded to 2 for hex, 4 for oct, 8 for binary
         if isBytewise {
             minDigits = [
-                Radix.binary: 8,
+                .binary: 8,
                 .octal: 4,
                 .hex: 2
             ][radix, default: minDigits]
@@ -96,21 +126,35 @@ public class IntegerFormatter {
             string = String(repeating: "0", count: max(0, minDigits - string.count)) + string
         }
 
-        if usesPrefix { string = radix.prefix + string }
+        if usesPrefix {
+            string = radix.prefix + string
+        }
 
-        if explicitPositiveSign && radix == .decimal && value >= 0 { string = "+" + string }
+        if explicitPositiveSign && radix == .decimal && value >= 0 {
+            string = "+" + string
+        }
 
         return string
     }
 }
 
+// MARK: - IntegerFormatStyle Radix Extension
+
 extension IntegerFormatStyle {
+    /// A format style for representing integers in a specified radix.
     struct Radix: FormatStyle {
         let radix: Int
         let uppercase: Bool
         let prefix: String?
         let suffix: String?
 
+        /// Creates a new radix format style.
+        ///
+        /// - Parameters:
+        ///   - radix: The integer base between 2 and 36.
+        ///   - uppercase: Whether to uppercase letters (for bases > 10).
+        ///   - prefix: Optional string to prepend.
+        ///   - suffix: Optional string to append.
         init(radix: Int, uppercase: Bool = false, prefix: String? = nil, suffix: String? = nil) {
             precondition((2...36).contains(radix), "Radix must be between 2 and 36")
             self.radix = radix
@@ -128,94 +172,36 @@ extension IntegerFormatStyle {
         }
     }
 
+    /// Creates a radix format style.
+    ///
+    /// - Parameters:
+    ///   - radix: The integer base (2...36).
+    ///   - uppercase: Whether to uppercase letters.
+    ///   - prefix: Optional prefix string.
+    ///   - suffix: Optional suffix string.
+    /// - Returns: A configured radix format style.
     static func radix(_ radix: Int, uppercase: Bool = false, prefix: String? = nil, suffix: String? = nil) -> Radix {
         Radix(radix: radix, uppercase: uppercase, prefix: prefix, suffix: suffix)
     }
 }
 
+// MARK: - Documentation
+
 /*
+ This module extends String interpolation to support binary integer formatting 
+ using customizable `IntegerFormatter` instances.
 
- IntegerFormatStyle -- let formattedDefault = 123456.formatted()
+ The `IntegerFormatter` supports:
+ - radix selection (binary, octal, decimal, hex)
+ - optional prefixes (e.g., "0x" for hex)
+ - explicit positive sign for decimal values
+ - bytewise padding (e.g., 8 digits for binary)
+ - minimum digit count padding
 
- decimalSeparator
- grouping
- locale
- notation
- precision
- rounded
- scale
- sign
- (not radix)
- (not padded)
+ Usage example:
 
- */
-
-
-//    Usage
-//    let number = 42
-//    let paddedNumber = number.formatted(.padded(length: 5))
-//    print("Padded Number: \(paddedNumber)") // Output: "00042"
-
-
-//import Foundation
-//
-//extension Number.FormatStyle<Int> {
-//
-//    struct RadixStyle: FormatStyle {
-//        typealias FormatInput = Int
-//        typealias FormatOutput = String
-//
-//        func format(_ value: Int) -> String {
-//            String(String(value).reversed())
-//        }
-//    }
-//
-//    struct Padded: FormatStyle {
-//        let length: Int
-//
-//        func format(_ value: Int) -> String {
-//            String(format: "%0\(length)d", value)
-//        }
-//    }
-//
-//    static func padded(length: Int) -> Padded {
-//        Padded(length: length)
-//    }
-//
-//}
-
-//    extension FormatStyle where Self == RadixStyle {
-//        static var reversed: RadixStyle { .init() }
-//    }
-
-
-
-//        25.formatted(.reversed) // "25"
-//        (-42).formatted(.reversed) // "24-"
-
-
-
-/// Extending default string interpolation behavior
-/// ===============================================
-///
-/// Code outside the standard library can extend string interpolation on
-/// `String` and many other common types by extending
-/// `DefaultStringInterpolation` and adding an `appendInterpolation(...)`
-/// method. For example:
-///
-///     extension DefaultStringInterpolation {
-///         fileprivate mutating func appendInterpolation(
-///                  escaped value: String, asASCII forceASCII: Bool = false) {
-///             for char in value.unicodeScalars {
-///                 appendInterpolation(char.escaped(asASCII: forceASCII))
-///             }
-///         }
-///     }
-///
-///     print("Escaped string: \(escaped: string)")
-///
-/// See `StringInterpolationProtocol` for details on `appendInterpolation`
-/// methods.
-///
-/// `DefaultStringInterpolation` extensions should add only `mutating` members
-/// and should not copy `self` or capture it in an escaping closure.
+     let value = 15
+     print("\(value, .format(radix: .hex))")                     // "F"
+     print("\(value, .format(radix: .hex, isBytewise: true))")   // "0F"
+     print("\(value, .format(radix: .hex, usesPrefix: true, isBytewise: true))") // "0x0F"
+*/

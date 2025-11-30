@@ -1,17 +1,20 @@
+// MARK: - Conditional String Interpolation Extension
+
 public extension DefaultStringInterpolation {
-    /// interpolation that succeeds only when the `condition` evaluates to true
+    /// Interpolates the string only when the `condition` evaluates to true.
     ///
-    /// For example,
+    /// For example:
     ///
-    /// ```
-    /// "Premiere Cheese Sandwich\(if: sandwich.IsStarred, " (*)")"
+    /// ```swift
+    /// "Premiere Cheese Sandwich\(if: sandwich.isStarred, " (*)")"
     /// ```
     ///
     /// - Parameters:
-    ///   - condition: a Boolean predicate that evaluates to true or false
-    ///   - literal: a `String` literal to include on conditional success
+    ///   - condition: A Boolean predicate. If true, the literal is included.
+    ///   - literal: The string to include when the condition is true.
+    ///   - Note: The `condition` is an `@autoclosure`, so you can simply write a Boolean expression directly.
     mutating func appendInterpolation(if condition: @autoclosure () -> Bool,
-                                      _ literal: StringLiteralType) {
+                                             _ literal: StringLiteralType) {
         if condition() { appendLiteral(literal) }
     }
 }

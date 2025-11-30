@@ -1,11 +1,17 @@
-extension DefaultStringInterpolation {
-    /// Provides `Optional` string interpolation
+// MARK: - Optional Value String Interpolation
+
+public extension DefaultStringInterpolation {
+    /// Interpolates an optional value, providing a custom default for `nil`.
     ///
     /// - Parameters:
-    ///   - value: An optional value to interpolate for the `.some` case
-    ///   - defaultValue: The string to present for the `.none`/`nil` case
-    public mutating func appendInterpolation<Wrapped>(_ value: Wrapped?,
-                                                      default defaultValue: String) {
+    ///   - value: The optional value to interpolate for the `.some` case.
+    ///   - defaultValue: The string to present for `.none` (nil).
+    ///
+    /// Example:
+    /// ```swift
+    /// "Count: \(myInt?, default: "none")"
+    /// ```
+    mutating func appendInterpolation<Wrapped>(_ value: Wrapped?, default defaultValue: String) {
         if let value = value {
             appendInterpolation(value)
         } else {
@@ -14,89 +20,101 @@ extension DefaultStringInterpolation {
     }
 }
 
-extension DefaultStringInterpolation {
-    /// Interpolates optional values using a supplied style.
+// MARK: - Optional Value Interpolation with Style
+
+public extension DefaultStringInterpolation {
+    /// Interpolates an optional value using a supplied formatter for style.
     ///
-    /// ```
-    /// // "There's Optional(23) and nil"
+    /// Example:
+    /// ```swift
     /// "There's \(value1, .format(style: .default)) and \(value2, .format(style: .default))"
-    ///
-    /// // "There's Optional(23) and Optional(nil)"
-    /// "There's \(value1, .format(style: .descriptive)) and \(value2, .format(style: .descriptive))"
-    ///
-    /// // "There's 23 and nil"
     /// "There's \(value1, .format(style: .stripped)) and \(value2, .format(style: .stripped))"
-    /// "There's \(value1, .format()) and \(value2, .format())"
     /// ```
     ///
     /// - Parameters:
-    ///   - value: An optional value to interpolate for the `.some` case
-    ///   - formatter: An `OptionalFormatter` instance
-    public mutating func appendInterpolation<Wrapped>(_ value: Wrapped?,
-                                                      _ formatter: OptionalFormatter) {
+    ///   - value: The optional value for interpolation.
+    ///   - formatter: An `OptionalFormatter` instance to determine style.
+    mutating func appendInterpolation<Wrapped>(_ value: Wrapped?, _ formatter: OptionalFormatter) {
         appendLiteral(formatter.string(from: value))
     }
 }
 
+// MARK: - OptionalFormatter for Customizing Optional Interpolation
+
+/// Formats optional values for string interpolation using different styles.
 public class OptionalFormatter {
-    /// Optional Interpolation Styles
+    /// Styles for presenting optional values in interpolation.
     public enum OptionalStyle {
-        case descriptive            // Includes `Optional` for both `some` and `none` cases
-        case stripped               // Strips `Optional` for both `some` and `none` cases
-        case system                 // system - includes Optional` for `some` but not `none`
+        /// Includes `Optional` for both `.some` and `.none`
+        case descriptive
+        /// No `Optional` in output at all
+        case stripped
+        /// System default: `Optional(x)` for `.some`, just default for `.none`
+        case system
+        /// Alias for `.system`
         case `default`
     }
-    
-    public var style: OptionalStyle = .stripped     //  The style used to present the optional
-    public var defaultValue: String = "nil"         // The fallback text for `.none` case
-    
-    public init(style: OptionalStyle = .stripped,
-                `default`: String = "nil") {
+
+    /// The style used to present the optional value.
+    public var style: OptionalStyle = .stripped
+    /// The fallback text to use for `.none` case.
+    public var defaultValue: String = "nil"
+
+    /// Creates an `OptionalFormatter` with the given style and default value.
+    ///
+    /// - Parameters:
+    ///   - style: The style to apply when formatting optional values.
+    ///   - default: The string to use when the value is `.none`.
+    public init(style: OptionalStyle = .stripped, default: String = "nil") {
         (self.style, self.defaultValue) = (style, `default`)
     }
-    
-    public static func format(style: OptionalStyle = .stripped,
-                              `default`: String = "nil") -> OptionalFormatter {
-        return OptionalFormatter(style: style, default: `default`)
+
+    /// Returns a configured formatter instance.
+    ///
+    /// - Parameters:
+    ///   - style: The style to apply when formatting optional values.
+    ///   - default: The string to use when the value is `.none`.
+    /// - Returns: A configured `OptionalFormatter`.
+    public static func format(style: OptionalStyle = .stripped, default: String = "nil") -> OptionalFormatter {
+        OptionalFormatter(style: style, default: `default`)
     }
-    
+
+    /// Returns a formatted string representing the optional value.
+    ///
+    /// - Parameter value: The optional value to format.
+    /// - Returns: A string formatted according to the formatter's style.
     public func string<Wrapped>(from value: Wrapped?) -> String {
         switch style {
-            case .descriptive:      // Includes the word `Optional` for both `some` and `none` cases
-                if value == nil {
-                    return "Optional(\(defaultValue))"
-                } else {
-                    return String(describing: value)
-                }
-                
-            case .stripped:         // Strips the word `Optional` for both `some` and `none` cases
-                if let value = value {
-                    return "\(value)"
-                } else {
-                    return defaultValue
-                }
-                
-            case .system,
-                    .default:      // includes the word `Optional` for`some` cases but not `none`.
-                if value != nil {
-                    return String(describing: value)
-                } else {
-                    return defaultValue
-                }
+        case .descriptive:
+            return value == nil ? "Optional(\(defaultValue))" : String(describing: value)
+        case .stripped:
+            return value.map { "\($0)" } ?? defaultValue
+        case .system, .default:
+            return value != nil ? String(describing: value) : defaultValue
         }
     }
 }
 
+// MARK: - Noun Pluralization String Interpolation
 
-
-
-extension String.StringInterpolation {
-    public mutating func appendInterpolation(_ value: Int,
-                                             zero: String, one: String, many: String) {
+public extension String.StringInterpolation {
+    /// Interpolates noun forms for zero, one, and many cases based on integer value.
+    ///
+    /// - Parameters:
+    ///   - value: The integer value to determine pluralization.
+    ///   - zero: The string to use when `value` is zero.
+    ///   - one: The string to use when `value` is one.
+    ///   - many: The string to use for all other values.
+    ///
+    /// Example:
+    /// ```swift
+    /// "You have \(count, zero: "none", one: "one", many: "many") apples."
+    /// ```
+    mutating func appendInterpolation(_ value: Int, zero: String, one: String, many: String) {
         switch value {
-            case 0: appendLiteral(zero)
-            case 1: appendLiteral(one)
-            default: appendLiteral(many)
+        case 0: appendLiteral(zero)
+        case 1: appendLiteral(one)
+        default: appendLiteral(many)
         }
     }
 }
