@@ -11,8 +11,20 @@ public extension DefaultStringInterpolation {
     /// ```swift
     /// "Count: \(myInt?, default: "none")"
     /// ```
-    mutating func appendInterpolation<Wrapped>(_ value: Wrapped?, default defaultValue: String) {
-        if let value = value {
+    mutating func appendInterpolation(_ value: String?, default defaultValue: String) {
+        appendLiteral(value ?? defaultValue)
+    }
+    
+    mutating func appendInterpolation<Wrapped: CustomStringConvertible>(_ value: Wrapped?, default defaultValue: String) {
+        if let value {
+            appendLiteral(String(describing: value))
+        } else {
+            appendLiteral(defaultValue)
+        }
+    }
+    
+    mutating func appendInterpolation<Wrapped>(_ value: Wrapped?, nilText defaultValue: String) {
+        if let value {
             appendInterpolation(value)
         } else {
             appendLiteral(defaultValue)
@@ -118,3 +130,4 @@ public extension String.StringInterpolation {
         }
     }
 }
+
